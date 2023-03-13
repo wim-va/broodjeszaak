@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+require_once "../Entities/Bestelling.php";
 class Klant
 {
     private int $id;
