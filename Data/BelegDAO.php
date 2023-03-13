@@ -1,12 +1,12 @@
 <?php
 
 declare(strict_types=1);
-require_once "../Entities/Beleg.php";
+require_once "Entities/Beleg.php";
 require_once "DBConfig.php";
 class BelegDAO
 {
     // create
-    public function createBeleg(string $belegNaam, float $belegPrijs)
+    public function createBeleg(string $belegNaam, float $belegPrijs): void
     {
         $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);
         $sql = "INSERT INTO beleg(belegNaam, belegPrijs) VALUES(:belegNaam, :belegPrijs);";
@@ -18,7 +18,7 @@ class BelegDAO
         $dbh = null;
     }
     // read
-    public function getAlleBeleg(): ?array
+    public function getAlleBeleg(): array
     {
         $belegs = array();
         $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);

@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once "../Entities/Formaat.php";
+require_once "Entities/Formaat.php";
 require_once "DBConfig.php";
 class FormaatDAO
 {
@@ -74,5 +74,5 @@ class FormaatDAO
         $smtm = $dbh->prepare($sql);
         $smtm->execute([":formaatId" => $formaatId]);
         $dbh = null;
-    }    // auxiliary functions
+    } // auxiliary functions
 }

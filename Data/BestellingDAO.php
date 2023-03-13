@@ -1,12 +1,12 @@
 <?php
 
 declare(strict_types=1);
-require_once("../Entities/Bestelling.php");
-require_once("DBConfig.php");
+require_once "Entities/Bestelling.php";
+require_once "DBConfig.php";
 class BestellingDAO
 {
     // create
-    public function createBestelling(int $beleg, int $formaat, int $saus, int $soort, int $id)
+    public function createBestelling(int $beleg, int $formaat, int $saus, int $soort, int $id): void
     {
         $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);
         $sql = "INSERT INTO bestelling(belegId, formaatId, sausId, soortId, klantId, datum) VALUES(:belegId, :formaatId, :sausId, :soortId, :klantId, :datum);";
@@ -21,7 +21,7 @@ class BestellingDAO
         ]);
     }
     // read
-    public function getAllBestellingen()
+    public function getAllBestellingen(): array
     {
         $bestellingen = array();
         $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);
@@ -41,7 +41,7 @@ class BestellingDAO
         }
         return $bestellingen;
     }
-    public function getBestellingenKlant(int $klantId)
+    public function getBestellingenKlant(int $klantId): ?array
     {
         $bestellingen = array();
         $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);
@@ -64,32 +64,14 @@ class BestellingDAO
         }
         return $bestellingen;
     }
-    public function getBestellingOpId(int $bestellingId)
-    /*    
- {
-        $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);
-        $sql = "SELECT * FROM bestelling WHERE bestellingId = :bestellingId;";
-        $smtm = $dbh->prepare($sql);
-        $smtm->execute([":bestellingId" => $bestellingId]);
-        $result = $smtm->fetch(PDO::FETCH_ASSOC);
-        $bestelling = new Bestelling(
-            $result["bestellingId"],
-            $result["belegId"],
-            $result["formaatId"],
-            $result["sausId"],
-            $result["soortId"],
-            $result["klantId"],
-            $result["datum"]
-        );
-        return $bestelling;
-    } 
-    */
+    public function getBestellingOpId(int $bestellingId): ?Bestelling
     {
         $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);
         $sql = "SELECT * FROM bestelling WHERE bestelling = :bestellingId;";
         $smtm = $dbh->prepare($sql);
         $smtm->execute([":bestellingId" => $bestellingId]);
         $result = $smtm->fetch(PDO::FETCH_ASSOC);
+        $dbh = null;
         $bestelling = new Bestelling(
             intval($result["bestellingId"]),
             intval($result["belegId"]),
@@ -103,5 +85,12 @@ class BestellingDAO
     }
     // update
     // delete
-    // auxiliary functions
+    public function deleteBestelling(int $bestellingId): void
+    {
+        $dbh = new PDO(DBConfig::$DB_CONN, DBConfig::$DB_USER, DBConfig::$DB_PASS);
+        $sql = "DELETE FROM bestelling WHERE bestellingId = :bestellingId;";
+        $smtm = $dbh->prepare($sql);
+        $smtm->execute([":bestellingId" => $bestellingId]);
+        $dbh = null;
+    }
 }
